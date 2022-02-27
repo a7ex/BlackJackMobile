@@ -13,10 +13,10 @@ struct ContentView: View {
         NavigationView {
             VStack {
                 ZStack {
-                    CardView(card: Card(value: 10, suit: .clubs), size: 300)
+                    CardImageView(cardImageName: "10t", maximumHeight: 300)
                         .rotationEffect(.degrees(-16))
                         .offset(x: -10, y: 0)
-                    CardView(card: Card(value: 1, suit: .clubs), size: 300)
+                    CardImageView(cardImageName: "1t", maximumHeight: 300)
                         .rotationEffect(.degrees(8))
                         .offset(x: 30, y: 12)
                 }

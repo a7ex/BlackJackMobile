@@ -9,7 +9,7 @@ import SwiftUI
 
 struct CardImageView: View {
     let cardImageName: String
-    let size: CGFloat
+    let maximumHeight: CGFloat
     
     var body: some View {
         Image(cardImageName)
@@ -19,13 +19,13 @@ struct CardImageView: View {
             .padding(4)
             .background(.white)
             .cornerRadius(6)
-            .frame(maxHeight: size)
-            .shadow(color: .black, radius: 2, x: 0, y: 0)
+            .frame(maxHeight: maximumHeight)
+            .shadow(color: .black, radius: 3, x: 1, y: 1)
     }
 }
 
 struct CardImageView_Previews: PreviewProvider {
     static var previews: some View {
-        CardImageView(cardImageName: "12h", size: 144)
+        CardImageView(cardImageName: "12h", maximumHeight: 160)
     }
 }

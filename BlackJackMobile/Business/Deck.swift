@@ -14,23 +14,22 @@ class Deck {
         if cards.count < 20 {
             shuffleCards()
         }
-        let position = Int.random(in: 0..<cards.count)
-        let card = cards[position]
-        cards.remove(at: position)
-        return card
+        return cards.remove(at: 0)
     }
 
     private var allCards: [Card] {
-        var cards = [Card]()
-        for suit in [Suit.clubs, Suit.spades, Suit.hearts, Suit.diamonds] {
-            for value in 1...13 {
-                cards.append(Card(value: value, suit: suit))
-            }
+        return Suit.allCases.reduce([Card]()) { allCards, suit in
+            return allCards + suit.allCards
         }
-        return cards
     }
 
     private func shuffleCards() {
         cards = allCards.shuffled()
+    }
+}
+
+extension Suit {
+    var allCards: [Card] {
+        return Array(1...13).map { Card(value: $0, suit: self) }
     }
 }

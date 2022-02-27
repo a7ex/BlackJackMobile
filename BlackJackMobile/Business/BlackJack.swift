@@ -9,13 +9,13 @@ import Foundation
 import Combine
 
 class BlackJack: ObservableObject {
-    @Published var gameEnded = false
+    @Published var ended = false
     @Published var currentPlayerIndex: Int?
 
     var players: [Player]
     var winner: Player?
+    let dealer: Player
     private let deck: Deck
-    private let dealer: Player
 
     init(playerNames: [String]) {
         guard playerNames.count > 0 else {
@@ -30,7 +30,7 @@ class BlackJack: ObservableObject {
     func startNewGame() {
         players.forEach { $0.reset() }
         dealer.reset()
-        gameEnded = false
+        ended = false
         winner = nil
         dealCards()
     }
@@ -51,6 +51,10 @@ class BlackJack: ObservableObject {
         return dealer.hand
     }
 
+    var dealerScore: Int {
+        return dealer.currentValue
+    }
+
     var currentPlayer: Player? {
         guard let currentPlayerIndex = currentPlayerIndex else {
             return nil
@@ -58,11 +62,11 @@ class BlackJack: ObservableObject {
         return players[currentPlayerIndex]
     }
 
-    private func position(of player: Player) -> Int? {
-        guard let position = players.firstIndex(where: { $0.name == player.name }) else {
-            return nil
+    func playerScore(at index: Int? = nil) -> Int {
+        guard let ind = index ?? currentPlayerIndex else {
+            return 0
         }
-        return position
+        return players[ind].currentValue
     }
 
     func hand(of player: Player) -> [Card] {
@@ -72,19 +76,8 @@ class BlackJack: ObservableObject {
         return hand(of: position)
     }
 
-    private func hand(of player: Int) -> [Card] {
-        return players[player].hand
-    }
-
-    private func addCardToDealerHand() {
-        dealer.addCard(deck.pickCard())
-        if dealer.currentStatus == .blackjack {
-            endGame()
-        }
-    }
-
     func hit(index: Int? = nil) {
-        guard !gameEnded else { return }
+        guard !ended else { return }
         let validIndex = index ?? currentPlayerIndex
         guard let ind = validIndex else {
             return
@@ -99,7 +92,7 @@ class BlackJack: ObservableObject {
     }
 
     func changeTurn() {
-        guard !gameEnded else { return }
+        guard !ended else { return }
         guard let ind = currentPlayerIndex else {
             return
         }
@@ -125,8 +118,48 @@ class BlackJack: ObservableObject {
         objectWillChange.send()
     }
 
+    func endGame() {
+        ended = true
+        guard players.first(where: { $0.currentStatus == .dealing }) == nil else {
+            winner = nil
+            return
+        }
+        if let gameWinner = players.first(where: { $0.currentStatus == .blackjack }) {
+            winner = gameWinner
+            return
+        }
+        while dealer.currentValue < 17 {
+            addCardToDealerHand()
+        }
+        let allPlayers = players + [dealer]
+        let playersRanked = allPlayers
+            .filter { $0.currentStatus != .bust }
+            .sorted { $0.currentValue > $1.currentValue }
+        winner = playersRanked.first
+    }
+
+    // MARK: - Private
+    
+    private func position(of player: Player) -> Int? {
+        guard let position = players.firstIndex(where: { $0.name == player.name }) else {
+            return nil
+        }
+        return position
+    }
+
+    private func hand(of player: Int) -> [Card] {
+        return players[player].hand
+    }
+
+    private func addCardToDealerHand() {
+        dealer.addCard(deck.pickCard())
+        if dealer.currentStatus == .blackjack {
+            endGame()
+        }
+    }
+
     private func player(at index: Int? = nil) -> Player? {
-        guard !gameEnded else { return nil }
+        guard !ended else { return nil }
         let validIndex = index ?? currentPlayerIndex
         guard let ind = validIndex else {
             return nil
@@ -145,36 +178,5 @@ class BlackJack: ObservableObject {
             status = players[current].currentStatus
         }
         return current
-    }
-
-    var dealerScore: Int {
-        return dealer.currentValue
-    }
-
-    func playerScore(at index: Int? = nil) -> Int {
-        guard let ind = index ?? currentPlayerIndex else {
-            return 0
-        }
-        return players[ind].currentValue
-    }
-
-    func endGame() {
-        gameEnded = true
-        guard players.first(where: { $0.currentStatus == .dealing }) == nil else {
-            winner = nil
-            return
-        }
-        if let gameWinner = players.first(where: { $0.currentStatus == .blackjack }) {
-            winner = gameWinner
-            return
-        }
-        while dealer.currentValue < 17 {
-            addCardToDealerHand()
-        }
-        let allPlayers = players + [dealer]
-        let playersRanked = allPlayers
-            .filter { $0.currentStatus != .bust }
-            .sorted { $0.currentValue > $1.currentValue }
-        winner = playersRanked.first
     }
 }

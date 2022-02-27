@@ -16,21 +16,22 @@ struct GameInProgressView: View {
     var body: some View {
         VStack {
             Text("Dealer's hand:")
+                .font(.headline)
             HStack {
                 if let card = game.dealerHand.first {
-                    CardImageView(cardImageName: card.imageName, size: cardSize)
+                    CardImageView(cardImageName: card.imageName, maximumHeight: cardSize)
                 }
-                CardImageView(cardImageName: "backside", size: cardSize)
+                CardImageView(cardImageName: "backside", maximumHeight: cardSize)
             }
-
             if let player = game.currentPlayer {
                 Text("\(player.name)'s hand:")
-                    .padding(.top)
+                    .font(.headline)
+                    .padding(.top, 20)
                 HStack {
-                    ForEach(game.hand(of: player), id: \.value) { card in
+                    ForEach(game.hand(of: player), id: \.imageName) { card in
                         CardImageView(
                             cardImageName: revealed ? card.imageName: "backside",
-                            size: cardSize
+                            maximumHeight: cardSize
                         )
                     }
                 }
@@ -67,7 +68,9 @@ struct GameInProgressView: View {
                 }
             } else {
                 Button("Reveal") {
-                    revealed.toggle()
+                    withAnimation {
+                        revealed.toggle()
+                    }
                 }
                 .buttonStyle(BorderedButtonStyle())
             }

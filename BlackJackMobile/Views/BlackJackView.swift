@@ -14,13 +14,15 @@ struct BlackJackView: View {
     var body: some View {
         ZStack {
             Color.mint.ignoresSafeArea()
-            if game.gameEnded {
+            if game.ended {
                 GameEndedView(game: game, cardSize: cardSize)
             } else {
                 GameInProgressView(game: game, cardSize: cardSize)
             }
         }
         .tint(.white)
+        .navigationTitle("Play Blackjack")
+        .navigationBarTitleDisplayMode(.inline)
     }
 }
 

@@ -8,21 +8,8 @@
 import Foundation
 import SwiftUI
 
-enum Suit {
+enum Suit: CaseIterable {
     case clubs, diamonds, hearts, spades
-
-    var symbol: String {
-        switch self {
-        case .clubs:
-            return "♣️"
-        case .diamonds:
-            return "♦️"
-        case .hearts:
-            return "♥️"
-        case .spades:
-            return "♠️"
-        }
-    }
 
     var imageIdentifier: String {
         switch self {
@@ -36,17 +23,8 @@ enum Suit {
             return "p"
         }
     }
-
-    var color: Color {
-        switch self {
-        case .hearts, .diamonds:
-            return .red
-        case .spades, .clubs:
-            return .black
-        }
-    }
     
-    var allCards: String {
+    var allCardEmojis: String {
         switch self {
         case .clubs:
             return "🃑🃒🃓🃔🃕🃖🃗🃘🃙🃚🃛🃝🃞"
@@ -56,6 +34,28 @@ enum Suit {
             return "🂡🂢🂣🂤🂥🂦🂧🂨🂩🂪🂫🂭🂮"
         case .spades:
             return "🂡🂢🂣🂤🂥🂦🂧🂨🂩🂪🂫🂭🂮"
+        }
+    }
+
+    var color: Color {
+        switch self {
+        case .hearts, .diamonds:
+            return .red
+        case .spades, .clubs:
+            return .black
+        }
+    }
+
+    var symbol: String {
+        switch self {
+        case .clubs:
+            return "♣️"
+        case .diamonds:
+            return "♦️"
+        case .hearts:
+            return "♥️"
+        case .spades:
+            return "♠️"
         }
     }
 }

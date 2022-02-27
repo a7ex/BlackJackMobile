@@ -19,7 +19,6 @@
 		FA941B9527CC20BA00E97D66 /* BlackJack.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8827CC20BA00E97D66 /* BlackJack.swift */; };
 		FA941B9627CC20BA00E97D66 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8927CC20BA00E97D66 /* Player.swift */; };
 		FA941B9827CC20BA00E97D66 /* GameEndedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8C27CC20BA00E97D66 /* GameEndedView.swift */; };
-		FA941B9927CC20BA00E97D66 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8D27CC20BA00E97D66 /* CardView.swift */; };
 		FA941B9A27CC20BA00E97D66 /* GameInProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8E27CC20BA00E97D66 /* GameInProgressView.swift */; };
 		FA941B9B27CC20BA00E97D66 /* CardImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B8F27CC20BA00E97D66 /* CardImageView.swift */; };
 		FA941B9C27CC20BA00E97D66 /* BlackJackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B9027CC20BA00E97D66 /* BlackJackView.swift */; };
@@ -59,7 +58,6 @@
 		FA941B8827CC20BA00E97D66 /* BlackJack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackJack.swift; sourceTree = "<group>"; };
 		FA941B8927CC20BA00E97D66 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		FA941B8C27CC20BA00E97D66 /* GameEndedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameEndedView.swift; sourceTree = "<group>"; };
-		FA941B8D27CC20BA00E97D66 /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		FA941B8E27CC20BA00E97D66 /* GameInProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameInProgressView.swift; sourceTree = "<group>"; };
 		FA941B8F27CC20BA00E97D66 /* CardImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardImageView.swift; sourceTree = "<group>"; };
 		FA941B9027CC20BA00E97D66 /* BlackJackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlackJackView.swift; sourceTree = "<group>"; };
@@ -151,11 +149,11 @@
 		FA941B8427CC20BA00E97D66 /* Business */ = {
 			isa = PBXGroup;
 			children = (
+				FA941B8827CC20BA00E97D66 /* BlackJack.swift */,
+				FA941B8927CC20BA00E97D66 /* Player.swift */,
 				FA941B8527CC20BA00E97D66 /* Card.swift */,
 				FA941B8627CC20BA00E97D66 /* Suit.swift */,
 				FA941B8727CC20BA00E97D66 /* Deck.swift */,
-				FA941B8827CC20BA00E97D66 /* BlackJack.swift */,
-				FA941B8927CC20BA00E97D66 /* Player.swift */,
 			);
 			path = Business;
 			sourceTree = "<group>";
@@ -163,12 +161,11 @@
 		FA941B8B27CC20BA00E97D66 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				FA941B8C27CC20BA00E97D66 /* GameEndedView.swift */,
-				FA941B8D27CC20BA00E97D66 /* CardView.swift */,
-				FA941B8E27CC20BA00E97D66 /* GameInProgressView.swift */,
-				FA941B8F27CC20BA00E97D66 /* CardImageView.swift */,
-				FA941B9027CC20BA00E97D66 /* BlackJackView.swift */,
 				FA941B9127CC20BA00E97D66 /* ContentView.swift */,
+				FA941B9027CC20BA00E97D66 /* BlackJackView.swift */,
+				FA941B8E27CC20BA00E97D66 /* GameInProgressView.swift */,
+				FA941B8C27CC20BA00E97D66 /* GameEndedView.swift */,
+				FA941B8F27CC20BA00E97D66 /* CardImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -309,7 +306,6 @@
 				FA941B9A27CC20BA00E97D66 /* GameInProgressView.swift in Sources */,
 				FA941B9C27CC20BA00E97D66 /* BlackJackView.swift in Sources */,
 				FA941B9827CC20BA00E97D66 /* GameEndedView.swift in Sources */,
-				FA941B9927CC20BA00E97D66 /* CardView.swift in Sources */,
 				FA941B9427CC20BA00E97D66 /* Deck.swift in Sources */,
 				FA941B9627CC20BA00E97D66 /* Player.swift in Sources */,
 				FA941B9327CC20BA00E97D66 /* Suit.swift in Sources */,

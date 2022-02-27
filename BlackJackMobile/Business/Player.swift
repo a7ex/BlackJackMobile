@@ -39,14 +39,7 @@ class Player {
     }
 
     var result: String {
-        switch currentStatus {
-        case .blackjack:
-            return "Blackjack! (Score: 21)"
-        case .bust:
-            return "Bust! (Score: \(currentValue))"
-        case .dealing, .waitingForCall, .stand:
-            return "Score: \(currentValue)"
-        }
+        return "Score: \(currentValue)"
     }
 
     var currentValue: Int {

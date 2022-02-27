@@ -8,17 +8,8 @@
 import Foundation
 
 struct Card {
-    let suit: Suit
     let value: Int
-    let symbol: String
-
-    init(value: Int, suit: Suit) {
-        self.suit = suit
-        self.value = value
-        let allCards = suit.allCards
-        let index = allCards.index(allCards.startIndex, offsetBy: value - 1)
-        symbol = String(allCards[index])
-    }
+    let suit: Suit
 
     var imageName: String {
         return "\(value)\(suit.imageIdentifier)"
