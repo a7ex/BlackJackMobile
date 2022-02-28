@@ -90,15 +90,17 @@ struct StatusLabelView: View {
 
 extension BlackJack {
     var dealerStatus: (text: String, color: Color)? {
-        return status(of: dealer)
+        return dealer.statusLabelString
     }
 
     func status(of player: Player) -> (text: String, color: Color)? {
         guard let status = player.statusLabelString else {
-            if winner?.name == player.name {
+            if dealerScore > player.currentValue,
+               dealer.currentStatus != .bust {
+                return (text: "Lost", color: .red)
+            } else {
                 return (text: "Won!", color: .green)
             }
-            return nil
         }
         return status
     }
