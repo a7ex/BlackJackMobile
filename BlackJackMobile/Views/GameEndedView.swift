@@ -10,6 +10,7 @@ import SwiftUI
 struct GameEndedView: View {
     @ObservedObject var game: BlackJack
     let cardSize: CGFloat
+    @State private var scale: CGFloat = 0.1
 
     var body: some View {
         VStack {
@@ -23,6 +24,8 @@ struct GameEndedView: View {
                 }
                 if let dealerStatus = game.dealerStatus {
                     StatusLabelView(label: dealerStatus.text, textColor: dealerStatus.color)
+                        .scaleEffect(scale)
+                        .opacity(scale)
                 }
             }
             Text("Score: \(game.dealerScore)")
@@ -41,6 +44,8 @@ struct GameEndedView: View {
                         }
                         if let playerStatus = game.status(of: player) {
                             StatusLabelView(label: playerStatus.text, textColor: playerStatus.color)
+                                .scaleEffect(scale)
+                                .opacity(scale)
                         }
                     }
                     Text(player.result)
@@ -55,6 +60,11 @@ struct GameEndedView: View {
             .buttonStyle(BorderedButtonStyle())
         }
         .padding()
+        .onAppear {
+            withAnimation(.interpolatingSpring(mass: 0.1, stiffness: 20, damping: 0.9, initialVelocity: 5)) {
+                scale = 1.0
+            }
+        }
     }
 }
 
@@ -70,8 +80,8 @@ struct StatusLabelView: View {
 
     var body: some View {
         Text(label)
-            .font(.system(size: 80, weight: .black, design: .rounded))
-            .rotationEffect(.degrees(-16))
+            .font(.system(size: 60, weight: .black, design: .rounded))
+            .rotationEffect(.degrees(Double.random(in: -16...16)))
             .foregroundColor(textColor)
             .shadow(color: .white, radius: 4, x: 0, y: 0)
             .shadow(color: .yellow, radius: 10, x: 0, y: 0)
@@ -84,10 +94,10 @@ extension BlackJack {
     }
 
     func status(of player: Player) -> (text: String, color: Color)? {
-        if winner?.name == player.name {
-            return (text: "Won!", color: .green)
-        }
         guard let status = player.statusLabelString else {
+            if winner?.name == player.name {
+                return (text: "Won!", color: .green)
+            }
             return nil
         }
         return status
