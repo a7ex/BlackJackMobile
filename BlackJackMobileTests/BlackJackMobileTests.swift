@@ -18,19 +18,70 @@ class BlackJackMobileTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testBlackJack() throws {
+        measure {
+            let sut = BlackJack(playerNames: ["Player 1", "Player 2"])
+            if !sut.ended {
+                XCTAssertEqual(2, sut.dealerHand.count)
+                XCTAssertGreaterThan(sut.dealerScore, 2)
+                XCTAssertEqual(2, sut.hand(of: sut.players[0]).count)
+                XCTAssertEqual(2, sut.hand(of: sut.players[1]).count)
+                XCTAssertEqual("Player 1", sut.currentPlayer?.name)
+                sut.stand()
+                XCTAssertEqual("Player 2", sut.currentPlayer?.name)
+                sut.stand()
+                XCTAssertTrue(sut.ended)
+            } else {
+                let blackjack = sut.players.first { $0.currentStatus == .blackjack }
+                if blackjack == nil {
+                    XCTAssertEqual(21, sut.dealerScore)
+                } else {
+                    XCTAssertEqual(21, blackjack?.currentValue)
+                }
+            }
         }
     }
 
+    func testMockedBlackJack() {
+        let mockedDeck = MockedDeck()
+        mockedDeck.cards = [
+            Card(value: 3, suit: .diamonds),
+            Card(value: 4, suit: .diamonds),
+            Card(value: 2, suit: .diamonds),
+            Card(value: 3, suit: .diamonds),
+            Card(value: 4, suit: .diamonds),
+            Card(value: 2, suit: .diamonds),
+            Card(value: 12, suit: .diamonds),
+            Card(value: 1, suit: .diamonds),
+            Card(value: 1, suit: .diamonds),
+            Card(value: 3, suit: .diamonds)
+        ]
+        let sut = BlackJack(
+            playerNames: ["Player 1", "Player 2"],
+            deck: mockedDeck
+        )
+        XCTAssertEqual(6, sut.players[0].currentValue)
+        sut.hit()
+        sut.changeTurn()
+        XCTAssertEqual(8, sut.players[1].currentValue)
+        sut.hit()
+        sut.changeTurn()
+        XCTAssertEqual("Score: 16", sut.players[0].result)
+        sut.stand()
+        XCTAssertEqual("Score: 19", sut.players[1].result)
+        sut.stand()
+        XCTAssertEqual(18, sut.dealerScore)
+        XCTAssertTrue(sut.ended)
+        XCTAssertEqual(sut.winner?.name, sut.players[1].name)
+        let status = sut.status(of: sut.players[1])
+        XCTAssertEqual("Won!", status?.text)
+    }
+}
+
+class MockedDeck: CardDeck {
+    var cards = [Card]()
+
+    func pickCard() -> Card {
+        return cards.remove(at: 0)
+    }
 }

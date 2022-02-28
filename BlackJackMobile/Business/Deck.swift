@@ -7,7 +7,12 @@
 
 import Foundation
 
-class Deck {
+protocol CardDeck {
+    func pickCard() -> Card
+}
+
+class Deck: CardDeck {
+    private let numberOfDecks = 6
     private var cards = [Card]()
 
     func pickCard() -> Card {
@@ -19,7 +24,7 @@ class Deck {
 
     private var allCards: [Card] {
         return Suit.allCases.reduce([Card]()) { allCards, suit in
-            return allCards + suit.allCards
+            return allCards + Array(repeating: suit.allCards, count: numberOfDecks).flatMap { $0 }
         }
     }
 

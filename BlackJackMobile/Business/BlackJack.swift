@@ -15,13 +15,14 @@ class BlackJack: ObservableObject {
     var players: [Player]
     var winner: Player?
     let dealer: Player
-    private let deck: Deck
+    private let deck: CardDeck
 
-    init(playerNames: [String]) {
+    init(playerNames: [String],
+         deck: CardDeck = Deck()) {
         guard playerNames.count > 0 else {
             fatalError("Blackjack requires at least one player!")
         }
-        deck = Deck()
+        self.deck = deck
         dealer = Player(name: "Dealer")
         players = playerNames.map { Player(name: $0) }
         startNewGame()
@@ -33,18 +34,6 @@ class BlackJack: ObservableObject {
         ended = false
         winner = nil
         dealCards()
-    }
-
-    func dealCards() {
-        for index in 0..<players.count {
-            hit(index: index)
-        }
-        addCardToDealerHand()
-        for index in 0..<players.count {
-            hit(index: index)
-        }
-        addCardToDealerHand()
-        currentPlayerIndex = 0
     }
 
     var dealerHand: [Card] {
@@ -60,13 +49,6 @@ class BlackJack: ObservableObject {
             return nil
         }
         return players[currentPlayerIndex]
-    }
-
-    func playerScore(at index: Int? = nil) -> Int {
-        guard let ind = index ?? currentPlayerIndex else {
-            return 0
-        }
-        return players[ind].currentValue
     }
 
     func hand(of player: Player) -> [Card] {
@@ -118,7 +100,21 @@ class BlackJack: ObservableObject {
         objectWillChange.send()
     }
 
-    func endGame() {
+    // MARK: - Private
+
+    private func dealCards() {
+        for index in 0..<players.count {
+            hit(index: index)
+        }
+        addCardToDealerHand()
+        for index in 0..<players.count {
+            hit(index: index)
+        }
+        addCardToDealerHand()
+        currentPlayerIndex = 0
+    }
+
+    private func endGame() {
         ended = true
         guard players.first(where: { $0.currentStatus == .dealing }) == nil else {
             winner = nil
@@ -137,8 +133,6 @@ class BlackJack: ObservableObject {
             .sorted { $0.currentValue > $1.currentValue }
         winner = playersRanked.first
     }
-
-    // MARK: - Private
     
     private func position(of player: Player) -> Int? {
         guard let position = players.firstIndex(where: { $0.name == player.name }) else {

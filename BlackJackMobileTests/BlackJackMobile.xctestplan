@@ -1,0 +1,46 @@
+{
+  "configurations" : [
+    {
+      "id" : "1A62733B-395E-40D8-B0E8-1E49E840A39E",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : {
+      "targets" : [
+        {
+          "containerPath" : "container:BlackJackMobile.xcodeproj",
+          "identifier" : "FA941B5627CC200F00E97D66",
+          "name" : "BlackJackMobile"
+        }
+      ]
+    },
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:BlackJackMobile.xcodeproj",
+      "identifier" : "FA941B5627CC200F00E97D66",
+      "name" : "BlackJackMobile"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : true,
+      "target" : {
+        "containerPath" : "container:BlackJackMobile.xcodeproj",
+        "identifier" : "FA941B6627CC201000E97D66",
+        "name" : "BlackJackMobileTests"
+      }
+    },
+    {
+      "enabled" : false,
+      "target" : {
+        "containerPath" : "container:BlackJackMobile.xcodeproj",
+        "identifier" : "FA941B7027CC201000E97D66",
+        "name" : "BlackJackMobileUITests"
+      }
+    }
+  ],
+  "version" : 1
+}
