@@ -24,7 +24,7 @@ struct BlackJackView: View {
                     .font(.headline)
                 ZStack {
                     HStack {
-                        ForEach(game.dealerHand, id: \.value) { card in
+                        ForEach(game.dealerHand) { card in
                             CardImageView(cardImageName: (game.dealerHand.first == card || game.ended) ? card.imageName: "backside", maximumHeight: cardSize)
                         }
                     }
@@ -44,7 +44,7 @@ struct BlackJackView: View {
                         ZStack {
                             HStack {
                                 Spacer()
-                                ForEach(game.hand(of: player), id: \.imageName) { card in
+                                ForEach(game.hand(of: player)) { card in
                                     CardImageView(
                                         cardImageName: showCards(of: player) ? card.imageName: "backside",
                                         maximumHeight: cardSize
@@ -114,7 +114,7 @@ struct BlackJackView: View {
             scale = game.ended ? 1: 3
         }
     }
-    
+
     private func splitButtonAction() {
         game.split()
     }

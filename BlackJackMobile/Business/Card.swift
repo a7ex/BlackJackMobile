@@ -7,7 +7,8 @@
 
 import Foundation
 
-struct Card: Equatable {
+struct Card: Equatable, Identifiable {
+    let id = UUID().uuidString
     let value: Int
     let suit: Suit
 
