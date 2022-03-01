@@ -24,7 +24,7 @@ struct GameInProgressView: View {
                 CardImageView(cardImageName: "backside", maximumHeight: cardSize)
             }
             if let player = game.currentPlayer {
-                Text("\(player.name)'s hand:")
+                Text("Your hand:")
                     .font(.headline)
                     .padding(.top, 20)
                 HStack {

@@ -15,6 +15,7 @@ class BlackJack: ObservableObject {
     var players: [Player]
     let dealer: Player
     private let deck: CardDeck
+    private var splits = [Player]()
 
     init(playerNames: [String],
          deck: CardDeck = Deck()) {
@@ -56,6 +57,20 @@ class BlackJack: ObservableObject {
         return hand(of: position)
     }
 
+    func stand(index: Int? = nil) {
+        guard let player = player(at: index) else {
+            return
+        }
+        player.currentStatus = .stand
+        if let index = position(of: player),
+           let next = nextPlayer(after: index) {
+            currentPlayerIndex = next
+        } else {
+            endGame()
+        }
+        objectWillChange.send()
+    }
+
     func hit(index: Int? = nil) {
         guard !ended else { return }
         let validIndex = index ?? currentPlayerIndex
@@ -81,18 +96,20 @@ class BlackJack: ObservableObject {
         objectWillChange.send()
     }
 
-    func stand(index: Int? = nil) {
-        guard let player = player(at: index) else {
+    var canCurrentPlayerSplit: Bool {
+        guard let player = player() else { return false }
+        return player.canSplit
+    }
+
+    func split(index: Int? = nil) {
+        guard let player = player(at: index),
+              let card = player.split() else {
             return
         }
-        player.currentStatus = .stand
-        if let index = position(of: player),
-           let next = nextPlayer(after: index) {
-            currentPlayerIndex = next
-        } else {
-            endGame()
-        }
-        objectWillChange.send()
+        let splitPlayer = Player(name: "\(player.name)-Split")
+        splitPlayer.addCard(card)
+        let newIndex =  (index ?? currentPlayerIndex ?? 0) + 1
+        players.insert(splitPlayer, at: newIndex)
     }
 
     // MARK: - Private
@@ -120,10 +137,7 @@ class BlackJack: ObservableObject {
     }
     
     private func position(of player: Player) -> Int? {
-        guard let position = players.firstIndex(where: { $0.name == player.name }) else {
-            return nil
-        }
-        return position
+        return players.firstIndex(of: player)
     }
 
     private func hand(of player: Int) -> [Card] {
@@ -139,8 +153,7 @@ class BlackJack: ObservableObject {
 
     private func player(at index: Int? = nil) -> Player? {
         guard !ended else { return nil }
-        let validIndex = index ?? currentPlayerIndex
-        guard let ind = validIndex else {
+        guard let ind = index ?? currentPlayerIndex else {
             return nil
         }
         return players[ind]

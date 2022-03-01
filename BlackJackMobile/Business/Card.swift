@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Card {
+struct Card: Equatable {
     let value: Int
     let suit: Suit
 
@@ -17,5 +17,13 @@ struct Card {
 
     var blackJackValue: Int {
         return min(value, 10)
+    }
+}
+
+// MARK: - Equatable
+
+extension Card {
+    static func ==(lhs: Card, rhs: Card) -> Bool {
+        return lhs.value == rhs.value
     }
 }

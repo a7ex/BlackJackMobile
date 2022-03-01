@@ -20,9 +20,6 @@ struct ContentView: View {
                         .rotationEffect(.degrees(8))
                         .offset(x: 30, y: 12)
                 }
-                Text("Players:")
-                    .padding(.top)
-                Text(players.joined(separator: ", "))
                 NavigationLink(
                     destination: BlackJackView(game: BlackJack(playerNames: players))
                 ) {
@@ -34,13 +31,6 @@ struct ContentView: View {
             }
             .navigationTitle("Blackjack")
             .background(Color.mint)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add player") {
-                        players.append("Player \(players.count + 1)")
-                    }
-                }
-            }
         }
         .navigationViewStyle(StackNavigationViewStyle())
     }

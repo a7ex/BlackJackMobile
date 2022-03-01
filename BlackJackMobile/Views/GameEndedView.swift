@@ -30,10 +30,10 @@ struct GameEndedView: View {
             }
             Text("Score: \(game.dealerScore)")
             ScrollView {
+                Text("Your hand:")
+                    .font(.headline)
+                    .padding(.top)
                 ForEach(game.players, id: \.name) { player in
-                    Text("\(player.name)'s hand:")
-                        .font(.headline)
-                        .padding(.top)
                     ZStack {
                         HStack {
                             Spacer()

@@ -11,7 +11,8 @@ enum PlayerState {
     case dealing, waitingForCall, stand, bust, blackjack
 }
 
-class Player {
+class Player: Identifiable, Equatable {
+
     let name: String
     var hand = [Card]()
     var currentStatus = PlayerState.dealing
@@ -56,5 +57,28 @@ class Player {
             aces.remove(at: 0)
         }
         return sumWithAces
+    }
+
+    var canSplit: Bool {
+        guard hand.count == 2,
+              hand[0] == hand[1] else {
+                  return false
+              }
+        return true
+    }
+
+    func split() -> Card? {
+        guard canSplit else {
+            return nil
+        }
+        return hand.removeLast()
+    }
+}
+
+// MARK: - Equatable
+
+extension Player {
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs === rhs
     }
 }
