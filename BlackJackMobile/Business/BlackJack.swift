@@ -11,8 +11,8 @@ import Combine
 class BlackJack: ObservableObject {
     @Published var ended = false
     @Published var currentPlayerIndex: Int?
-
-    var players: [Player]
+    @Published var players: [Player]
+    
     let dealer: Player
     private let deck: CardDeck
     private var splits = [Player]()
@@ -29,6 +29,7 @@ class BlackJack: ObservableObject {
     }
 
     func startNewGame() {
+        players = players.filter { !$0.name.contains("-Split") }
         players.forEach { $0.reset() }
         dealer.reset()
         ended = false
@@ -106,8 +107,10 @@ class BlackJack: ObservableObject {
               let card = player.split() else {
             return
         }
+        player.addCard(deck.pickCard())
         let splitPlayer = Player(name: "\(player.name)-Split")
         splitPlayer.addCard(card)
+        splitPlayer.addCard(deck.pickCard())
         let newIndex =  (index ?? currentPlayerIndex ?? 0) + 1
         players.insert(splitPlayer, at: newIndex)
     }
