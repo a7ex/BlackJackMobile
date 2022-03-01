@@ -16,6 +16,7 @@ class Player: Identifiable, Equatable {
     let name: String
     var hand = [Card]()
     var currentStatus = PlayerState.dealing
+    private var splitCount = 0
 
     init(name: String) {
         self.name = name
@@ -23,6 +24,7 @@ class Player: Identifiable, Equatable {
 
     func reset() {
         hand = [Card]()
+        splitCount = 0
         currentStatus = PlayerState.dealing
     }
 
@@ -65,6 +67,11 @@ class Player: Identifiable, Equatable {
                   return false
               }
         return true
+    }
+
+    var nextSplitName: String {
+        splitCount += 1
+        return "\(name)-Split\(splitCount)"
     }
 
     func split() -> Card? {

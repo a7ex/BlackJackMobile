@@ -108,7 +108,7 @@ class BlackJack: ObservableObject {
             return
         }
         player.addCard(deck.pickCard())
-        let splitPlayer = Player(name: "\(player.name)-Split")
+        let splitPlayer = Player(name: player.nextSplitName)
         splitPlayer.addCard(card)
         splitPlayer.addCard(deck.pickCard())
         let newIndex =  (index ?? currentPlayerIndex ?? 0) + 1
