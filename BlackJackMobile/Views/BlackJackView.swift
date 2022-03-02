@@ -23,45 +23,49 @@ struct BlackJackView: View {
                 Text("Dealer's hand:")
                     .font(.headline)
                 ZStack {
-                    HStack {
+                    HStack(alignment: .bottom) {
+                        Spacer()
                         ForEach(game.dealerHand) { card in
                             CardImageView(cardImageName: (game.dealerHand.first == card || game.ended) ? card.imageName: "backside", maximumHeight: cardSize)
                         }
+                        Spacer()
                     }
-                    StatusLabelView(label: game.dealerStatus.text, textColor: game.dealerStatus.color)
-                        .scaleEffect(scale)
+                    DealerStatusBannerView(label: game.dealerStatus.text, textColor: game.dealerStatus.color)
+                        .scaleEffect(game.ended ? scale: 1)
                         .opacity(game.ended ? 1: 0)
                 }
-                Text("Score: \(game.dealerScore)")
-                    .font(.caption)
-                    .opacity(game.ended ? 1: 0)
+                Divider()
                 ScrollViewReader { proxy in
-                    ScrollView {
+                    ScrollView(showsIndicators: false) {
                         Spacer()
                         ForEach(game.players) { player in
-                            Text("\(player.name)'s hand:")
-                                .font(.headline)
-                                .padding(.top, 20)
-                            ZStack {
-                                HStack {
-                                    Spacer()
-                                    ForEach(game.hand(of: player)) { card in
-                                        CardImageView(
-                                            cardImageName: showCards(of: player) ? card.imageName: "backside",
-                                            maximumHeight: cardSize
-                                        )
+                            Group {
+                                Text("\(player.name)'s hand:")
+                                    .font(.headline)
+                                    .padding(.top, 20)
+                                ZStack {
+                                    HStack {
+                                        Spacer()
+                                        ForEach(game.hand(of: player)) { card in
+                                            CardImageView(
+                                                cardImageName: showCards(of: player) ? card.imageName: "backside",
+                                                maximumHeight: cardSize
+                                            )
+                                        }
+                                        Spacer()
                                     }
-                                    Spacer()
+                                    PlayerStatusBannerView(label: game.status(of: player).text, textColor: game.status(of: player).color)
+                                        .scaleEffect(game.ended ? scale: 1)
+                                        .opacity((game.ended || [.bust, .blackjack, .stand].contains(player.currentStatus)) ? 1: 0)
                                 }
-                                StatusLabelView(label: game.status(of: player).text, textColor: game.status(of: player).color)
-                                    .scaleEffect(scale)
-                                    .opacity(game.ended ? 1: 0)
+                                Text(player.result)
+                                    .font(.caption)
+                                    .opacity(showCards(of: player) ? 1: 0)
+
                             }
                             .id(game.players.firstIndex(of: player) ?? 0)
-                            Text(player.result)
-                                .font(.caption)
-                                .opacity(showCards(of: player) ? 1: 0)
                         }
+                        Spacer()
                     }
                     .background(.black.opacity(game.players.count > 1 ? 0.1: 0.0))
                     .cornerRadius(12)
@@ -147,35 +151,13 @@ struct BlackJackView: View {
     }
 }
 
-struct StatusLabelView: View {
-    let label: String
-    let textColor: Color
-
-    var body: some View {
-        Text(label)
-            .font(.system(size: 60, weight: .black, design: .rounded))
-            .rotationEffect(.degrees((Double.random(in: 5...10) * [-1, 1].randomElement()!)))
-            .foregroundColor(textColor)
-            .shadow(color: .white, radius: 4, x: 0, y: 0)
-            .shadow(color: .yellow, radius: 10, x: 0, y: 0)
-    }
-}
-
 extension BlackJack {
     var dealerStatus: (text: String, color: Color) {
-        return dealer.statusLabelString ?? (text: "", color: .green)
+        return dealer.statusLabelString ?? (text: dealer.result, color: Color.gray)
     }
 
     func status(of player: Player) -> (text: String, color: Color) {
-        guard let status = player.statusLabelString else {
-            if dealerScore > player.currentValue,
-               dealer.currentStatus != .bust {
-                return (text: "Lost", color: .red)
-            } else {
-                return (text: "Won!", color: .green)
-            }
-        }
-        return status
+        return player.statusLabelString ?? (text: "", color: .clear)
     }
 }
 
@@ -186,7 +168,13 @@ extension Player {
             return (text: "Blackjack!", color: .green)
         case .bust:
             return (text: "Bust!", color: .red)
-        case .dealing, .waitingForCall, .stand:
+        case .stand:
+            return (text: "Stand", color: .gray)
+        case .won:
+            return (text: "Won!", color: .green)
+        case .lost:
+            return (text: "Lost", color: .red)
+        case .dealing, .waitingForDecision:
             return nil
         }
     }
@@ -194,6 +182,10 @@ extension Player {
 
 struct BlackJackView_Previews: PreviewProvider {
     static var previews: some View {
-        BlackJackView(game: BlackJack(playerNames: ["Alex"]))
+        let bj = BlackJack(playerNames: ["Alex"])
+//        bj.hit()
+//        bj.changeTurn()
+//        bj.stand()
+        return BlackJackView(game: bj)
     }
 }

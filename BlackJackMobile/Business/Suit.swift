@@ -23,39 +23,4 @@ enum Suit: CaseIterable {
             return "p"
         }
     }
-    
-    var allCardEmojis: String {
-        switch self {
-        case .clubs:
-            return "🃑🃒🃓🃔🃕🃖🃗🃘🃙🃚🃛🃝🃞"
-        case .diamonds:
-            return "🃁🃂🃃🃄🃅🃆🃇🃈🃉🃊🃋🃍🃎"
-        case .hearts:
-            return "🂡🂢🂣🂤🂥🂦🂧🂨🂩🂪🂫🂭🂮"
-        case .spades:
-            return "🂡🂢🂣🂤🂥🂦🂧🂨🂩🂪🂫🂭🂮"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .hearts, .diamonds:
-            return .red
-        case .spades, .clubs:
-            return .black
-        }
-    }
-
-    var symbol: String {
-        switch self {
-        case .clubs:
-            return "♣️"
-        case .diamonds:
-            return "♦️"
-        case .hearts:
-            return "♥️"
-        case .spades:
-            return "♠️"
-        }
-    }
 }

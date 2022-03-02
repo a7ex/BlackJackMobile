@@ -23,7 +23,7 @@ class BlackJackMobileTests: XCTestCase {
             let sut = BlackJack(playerNames: ["Player 1", "Player 2"])
             if !sut.ended {
                 XCTAssertEqual(2, sut.dealerHand.count)
-                XCTAssertGreaterThan(sut.dealerScore, 2)
+                XCTAssertGreaterThan(sut.computeDealerScore(), 2)
                 XCTAssertEqual(2, sut.hand(of: sut.players[0]).count)
                 XCTAssertEqual(2, sut.hand(of: sut.players[1]).count)
                 XCTAssertEqual("Player 1", sut.currentPlayer?.name)
@@ -34,9 +34,9 @@ class BlackJackMobileTests: XCTestCase {
             } else {
                 let blackjack = sut.players.first { $0.currentStatus == .blackjack }
                 if blackjack == nil {
-                    XCTAssertEqual(21, sut.dealerScore)
+                    XCTAssertEqual(21, sut.computeDealerScore())
                 } else {
-                    XCTAssertEqual(21, blackjack?.currentValue)
+                    XCTAssertEqual(21, blackjack?.computeScore())
                 }
             }
         }
@@ -60,21 +60,20 @@ class BlackJackMobileTests: XCTestCase {
             playerNames: ["Player 1", "Player 2"],
             deck: mockedDeck
         )
-        XCTAssertEqual(6, sut.players[0].currentValue)
+        XCTAssertEqual(6, sut.players[0].computeScore())
         sut.hit()
         sut.changeTurn()
-        XCTAssertEqual(8, sut.players[1].currentValue)
+        XCTAssertEqual(8, sut.players[1].computeScore())
         sut.hit()
         sut.changeTurn()
         XCTAssertEqual("Score: 16", sut.players[0].result)
         sut.stand()
         XCTAssertEqual("Score: 19", sut.players[1].result)
         sut.stand()
-        XCTAssertEqual(18, sut.dealerScore)
+        XCTAssertEqual(18, sut.computeDealerScore())
         XCTAssertTrue(sut.ended)
-        XCTAssertEqual(sut.winner?.name, sut.players[1].name)
         let status = sut.status(of: sut.players[1])
-        XCTAssertEqual("Won!", status?.text)
+        XCTAssertEqual("Won!", status.text)
     }
 }
 

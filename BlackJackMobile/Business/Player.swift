@@ -8,14 +8,13 @@
 import Foundation
 
 enum PlayerState {
-    case dealing, waitingForCall, stand, bust, blackjack
+    case dealing, waitingForDecision, stand, bust, blackjack, won, lost
 }
 
 class Player: Identifiable, Equatable {
-
     let name: String
-    var hand = [Card]()
-    var currentStatus = PlayerState.dealing
+    private(set) var hand = [Card]()
+    private(set) var currentStatus = PlayerState.dealing
     private var splitCount = 0
 
     init(name: String) {
@@ -25,27 +24,36 @@ class Player: Identifiable, Equatable {
     func reset() {
         hand = [Card]()
         splitCount = 0
-        currentStatus = PlayerState.dealing
+        currentStatus = .dealing
     }
 
     func addCard(_ card: Card) {
         hand.append(card)
-        if currentValue == 21 {
+        if computeScore() == 21 {
             currentStatus = .blackjack
-        } else if currentValue > 21 {
+        } else if computeScore() > 21 {
             currentStatus = .bust
         } else if hand.count < 3 {
             currentStatus = .dealing
         } else {
-            currentStatus = .waitingForCall
+            currentStatus = .waitingForDecision
         }
     }
 
-    var result: String {
-        return "Score: \(currentValue)"
+    func stand() {
+        currentStatus = .stand
     }
 
-    var currentValue: Int {
+    func calculateWinner(dealerPoints: Int) {
+        if [.blackjack, .bust].contains(currentStatus)  { return }
+        currentStatus = dealerPoints > computeScore() ? .lost: .won
+    }
+
+    var result: String {
+        return "Score: \(computeScore())"
+    }
+
+    func computeScore() -> Int {
         let sum = hand.reduce(0) { sum, card in
             if card.value == 1 {
                 return sum

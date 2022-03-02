@@ -20,7 +20,7 @@ struct CardImageView: View {
             .background(.white)
             .cornerRadius(6)
             .frame(maxHeight: maximumHeight)
-            .shadow(color: .black, radius: 3, x: 1, y: 1)
+            .shadow(color: .gray, radius: 3, x: 0, y: 0)
     }
 }
 

@@ -40,8 +40,8 @@ class BlackJack: ObservableObject {
         return dealer.hand
     }
 
-    var dealerScore: Int {
-        return dealer.currentValue
+    func computeDealerScore() -> Int {
+        return dealer.computeScore()
     }
 
     var currentPlayer: Player? {
@@ -62,7 +62,7 @@ class BlackJack: ObservableObject {
         guard let player = player(at: index) else {
             return
         }
-        player.currentStatus = .stand
+        player.stand()
         if let index = position(of: player),
            let next = nextPlayer(after: index) {
             currentPlayerIndex = next
@@ -121,11 +121,14 @@ class BlackJack: ObservableObject {
         for index in 0..<players.count {
             hit(index: index)
         }
-        addCardToDealerHand()
+        dealer.addCard(deck.pickCard())
         for index in 0..<players.count {
             hit(index: index)
         }
-        addCardToDealerHand()
+        dealer.addCard(deck.pickCard())
+        if dealer.currentStatus == .blackjack {
+            endGame()
+        }
         currentPlayerIndex = 0
     }
 
@@ -134,8 +137,12 @@ class BlackJack: ObservableObject {
             return
         }
         ended = true
-        while dealer.currentValue < 17 {
-            addCardToDealerHand()
+        while dealer.computeScore() < 17 {
+            dealer.addCard(deck.pickCard())
+        }
+        let dealerFinalScore = (dealer.currentStatus == .bust) ? 0: computeDealerScore()
+        for player in players {
+            player.calculateWinner(dealerPoints: dealerFinalScore)
         }
     }
     
@@ -145,13 +152,6 @@ class BlackJack: ObservableObject {
 
     private func hand(of player: Int) -> [Card] {
         return players[player].hand
-    }
-
-    private func addCardToDealerHand() {
-        dealer.addCard(deck.pickCard())
-        if dealer.currentStatus == .blackjack {
-            endGame()
-        }
     }
 
     private func player(at index: Int? = nil) -> Player? {
@@ -165,7 +165,7 @@ class BlackJack: ObservableObject {
     private func nextPlayer(after startIndex: Int) -> Int? {
         var current = (startIndex + 1) % players.count
         var status = players[current].currentStatus
-        while ![.waitingForCall, .dealing].contains(status) {
+        while ![.waitingForDecision, .dealing].contains(status) {
             if current == startIndex {
                 return nil
             }

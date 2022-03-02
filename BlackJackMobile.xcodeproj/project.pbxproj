@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA7A8DE627CF18B90034535C /* PlayerStatusBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A8DE527CF18B90034535C /* PlayerStatusBannerView.swift */; };
+		FA7A8DE827CF18DA0034535C /* DealerStatusBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7A8DE727CF18DA0034535C /* DealerStatusBannerView.swift */; };
 		FA941B5B27CC200F00E97D66 /* BlackJackMobileApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA941B5A27CC200F00E97D66 /* BlackJackMobileApp.swift */; };
 		FA941B5F27CC201000E97D66 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA941B5E27CC201000E97D66 /* Assets.xcassets */; };
 		FA941B6227CC201000E97D66 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA941B6127CC201000E97D66 /* Preview Assets.xcassets */; };
@@ -41,6 +43,8 @@
 
 /* Begin PBXFileReference section */
 		FA70AC9A27CC582600A9CE4D /* BlackJackMobile.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = BlackJackMobile.xctestplan; sourceTree = "<group>"; };
+		FA7A8DE527CF18B90034535C /* PlayerStatusBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStatusBannerView.swift; sourceTree = "<group>"; };
+		FA7A8DE727CF18DA0034535C /* DealerStatusBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealerStatusBannerView.swift; sourceTree = "<group>"; };
 		FA941B5727CC200F00E97D66 /* BlackJackMobile.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BlackJackMobile.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA941B5A27CC200F00E97D66 /* BlackJackMobileApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackJackMobileApp.swift; sourceTree = "<group>"; };
 		FA941B5E27CC201000E97D66 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -159,6 +163,8 @@
 			children = (
 				FA941B9027CC20BA00E97D66 /* BlackJackView.swift */,
 				FA941B8F27CC20BA00E97D66 /* CardImageView.swift */,
+				FA7A8DE527CF18B90034535C /* PlayerStatusBannerView.swift */,
+				FA7A8DE727CF18DA0034535C /* DealerStatusBannerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -296,11 +302,13 @@
 				FA941B9227CC20BA00E97D66 /* Card.swift in Sources */,
 				FA941B9527CC20BA00E97D66 /* BlackJack.swift in Sources */,
 				FA941B9C27CC20BA00E97D66 /* BlackJackView.swift in Sources */,
+				FA7A8DE827CF18DA0034535C /* DealerStatusBannerView.swift in Sources */,
 				FA941B9427CC20BA00E97D66 /* Deck.swift in Sources */,
 				FA941B9627CC20BA00E97D66 /* Player.swift in Sources */,
 				FA941B9327CC20BA00E97D66 /* Suit.swift in Sources */,
 				FA941B5B27CC200F00E97D66 /* BlackJackMobileApp.swift in Sources */,
 				FA941B9B27CC20BA00E97D66 /* CardImageView.swift in Sources */,
+				FA7A8DE627CF18B90034535C /* PlayerStatusBannerView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
