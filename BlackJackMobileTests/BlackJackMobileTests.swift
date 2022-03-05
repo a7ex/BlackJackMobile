@@ -28,6 +28,7 @@ class BlackJackMobileTests: XCTestCase {
                 XCTAssertEqual(2, sut.hand(of: sut.players[1]).count)
                 XCTAssertEqual("Player 1", sut.currentPlayer?.name)
                 sut.stand()
+                sut.changeTurn()
                 XCTAssertEqual("Player 2", sut.currentPlayer?.name)
                 sut.stand()
                 XCTAssertTrue(sut.ended)

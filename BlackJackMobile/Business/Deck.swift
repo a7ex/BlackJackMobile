@@ -33,7 +33,7 @@ class Deck: CardDeck {
     }
 }
 
-extension Suit {
+private extension Suit {
     var allCards: [Card] {
         return Array(1...13).map { Card(value: $0, suit: self) }
     }
